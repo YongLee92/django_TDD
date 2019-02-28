@@ -12,7 +12,7 @@ from selenium import webdriver
 
 class NewVisitorTest(unittest.TestCase):
     def setUp(self):
-        self.browser = webdriver.Chrome('/Users/Leey/chromedriver')
+        self.browser = webdriver.Chrome('./chromedriver')
 
     def tearDown(self):
         self.browser.quit()

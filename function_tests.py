@@ -1,14 +1,8 @@
+import time
 import unittest
+
 from selenium import webdriver
-
-#browser = webdriver.Chrome('/Users/Leey/chromedriver')
-#browser.implicitly_wait(3)
-#browser.get('http://localhost:8000')
-
-#assert '일정관리' in browser.title, "Browser title was" + browser.title
-
-#browser.quit()
-
+from selenium.webdriver.common.keys import  Keys
 
 class NewVisitorTest(unittest.TestCase):
     def setUp(self):
@@ -18,9 +12,28 @@ class NewVisitorTest(unittest.TestCase):
         self.browser.quit()
 
     def test_can_start_a_list_and_retrieve_it_later(self):
+
         self.browser.get('http://localhost:8000')
-        self.assertIn('일정관리',self.browser.title)
-        self.self.fail('테스트종료')
+        self.assertIn('일정관리', self.browser.title)
+        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.assertIn('일정목록', header_text)
+
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertEqual(inputbox.get_attribute('placeholder'),'할일을 입력하세요')
+        
+        inputbox.send_keys('시장에서 미역 사기')
+
+        inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
+        #엔터키를 입력하면 페이지를 새로고침해서 모든 일정 목록을 보여준다
+
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_element_by_tag_name('tr')
+        self.assertTrue(any(row.text == '1: 시장에서 미역 사기'for row in rows))
+
+
+
+        self.fail('테스트 종료')
 
 
 if __name__ == '__main__':

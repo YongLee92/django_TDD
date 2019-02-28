@@ -1,0 +1,2 @@
+IDE 내에서 해당 tests 파일이 실행되지 않을 경우,
+python manage.py test로 실행
